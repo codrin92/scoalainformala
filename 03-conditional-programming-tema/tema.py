@@ -44,7 +44,7 @@ def rec_sum(s):
         else:
             return s-1+rec_sum(s-2)
 
-print(rec_sum())
+print(rec_sum(10))
 
 # Functie recursiva - suma nr impare
 def rec_sum(s):
