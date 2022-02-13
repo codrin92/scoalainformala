@@ -99,18 +99,32 @@
 # except:
 #     # daca apare o exceptie si vrem sa afisam ceva
 
+# try:
+#     valoare = int(input("Prima cifra din CNP: "))
+#     # impartire = 1/valoare
+#     lista = [1]
+#     valoare = lista[0.5]
+# except TypeError:
+#     print("Eroare la tipul variabilei")  #pot fi folosite si mai mult tipuri, listed in parantere except (TypeError, AttributeError):
+# except AttributeError:
+#     print("Eroare de atribut")
+# except ValueError:
+#     print("Ai introdus o litra in loc de cifra")
+# except ZeroDivisionError:
+#     print("Eroare la impartire")
+# except Exception as e:
+#     print("Exceptie la impartire", e)
+
 try:
-    valoare = int(input("Prima cifra din CNP: "))
+    valoare = int(input("Prima cifra din CNP: "))  #Daca in blocul de try exista o eroare, se va sari peste toate instructiunile ramase din blocul de try
     # impartire = 1/valoare
     lista = [1]
-    valoare = lista[0.5]
-except TypeError:
-    print("Eroare la tipul variabilei")
-except AttributeError:
-    print("Eroare de atribut")
-except ValueError:
-    print("Ai introdus o litra in loc de cifra")
-except ZeroDivisionError:
-    print("Eroare la impartire")
-except Exception as e:
-    print("Exceptie la impartire", e)
+    # valoare = lista[0.5]
+    print('Sunt in try')
+except (TypeError, AttributeError):
+    print("Tip de eroare")
+else:
+    print('nu exista exceptie')
+finally:                                #instructiunile din finally se vor executed oricumt
+    print('se executa oricum')
+print('Am iesit din try-except')

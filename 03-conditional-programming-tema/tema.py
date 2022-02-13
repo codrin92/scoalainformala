@@ -11,17 +11,25 @@
 # valoarea 0.
 
 def your_function(*args,**kwargs):
-    # args=[1, 5, -3, 'abc', [12, 56, 'cad'], 48, -20]
+    # args=[1, 5, -3, 'abc', [12, 56, 'cad'], 48, -20]  ----Linie folosita doar pt debugging initial
     sum=0
     dims=len(args)
     for i in range(dims):
         if isinstance(args[i], int)==True:
             sum=sum+args[i]
-    print(sum)
+    return sum
 
-your_function(1, 5, -3, 'abc', [12, 56, 'cad'], 48, -20, param_3=2)
+a = your_function(1, 5, -3, 'abc', [12, 56, 'cad'])
+print(a)
 
-# Functie recursiva
+b = your_function()
+print(b)
+
+c = your_function(2, 4, 'abc', param_1=2)
+print(c)
+
+
+# # Functie recursiva
 def rec_sum(s):
     if isinstance(s, int)==False:
         return 0
@@ -31,41 +39,41 @@ def rec_sum(s):
         return s+rec_sum(s-1)
 
 print(rec_sum(1))
-
-# Functie recursiva - suma nr pare
-def rec_sum(s):
+#
+# # Functie recursiva - suma nr pare
+def rec_sum_even(s):
     if isinstance(s, int)==False:
         return 0
     elif s<1:
         return 0
     else:
         if s%2==0:
-            return s+rec_sum(s-1)
+            return s+rec_sum_even(s-1)
         else:
-            return s-1+rec_sum(s-2)
+            return s-1+rec_sum_even(s-2)
 
-print(rec_sum(10))
-
-# Functie recursiva - suma nr impare
-def rec_sum(s):
+print(rec_sum_even(10))
+#
+# # Functie recursiva - suma nr impare
+def rec_sum_odd(s):
     if isinstance(s, int)==False:
         return 0
     elif s<1:
         return 0
     else:
         if s%2!=0:
-            return s+rec_sum(s-1)
+            return s+rec_sum_odd(s-1)
         else:
-            return s-1+rec_sum(s-2)
+            return s-1+rec_sum_odd(s-2)
 
-print(rec_sum(6))
+print(rec_sum_odd(6))
 
 # Functie care citeste valoarea si o returneaza daca este nr intreg. Returneaza 0 daca nu
 def input_function():
     c=input("Please provide a number: ")
     try:
         my_int=int(c)
-        print(c)
+        print(my_int) #printam/returnam valoarea numerica, nu string
     except ValueError:
         print('0')
 
