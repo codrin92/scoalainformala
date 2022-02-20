@@ -1,11 +1,13 @@
 import random
 
+
 def prnt_tic_tac_toe(board):  # 3: Functie care printeaza tabla de joc intr-un format user-friendly
     print(f" {board[0]} | {board[1]} | {board[2]} \n"
           f"___________\n"
           f" {board[3]} | {board[4]} | {board[5]} \n"
           f"___________\n"
           f" {board[6]} | {board[7]} | {board[8]} \n")
+
 
 def verificare_castigator(tabla):
     if tabla[0] == tabla[1] == tabla[2] != ' ' or tabla[3] == tabla[4] == tabla[5] != ' ' \
@@ -20,8 +22,10 @@ def verificare_castigator(tabla):
         final_joc = 2  #Egalitate
     else: final_joc = 0
     return final_joc
-#
+
+
 def alegere_calculator(a, b):
+
     if a[4] == ' ':
         a[4] = b
     elif a[0] == ' ' or a[2] == ' ' or a[6] == ' ' or a[8] == ' ':
@@ -103,5 +107,6 @@ def x_si_0_main_function():
                     print("Jucatorul a castigat")
                     return None
     return None
+
 
 x_si_0_main_function()
