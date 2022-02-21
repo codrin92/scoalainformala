@@ -23,16 +23,16 @@ def validare_cifra_control(cod_num):
     list_numere_control = [2, 7, 9, 1, 4, 6, 3, 5, 8, 2, 7,9]
     s_prod = sum(x * y for x, y in zip(list_numere, list_numere_control))
     rest = s_prod % 11
+    cifra_control = rest
     if rest == 10:
         cifra_control = 1
-    else:
-        cifra_control = rest
     if cifra_control != int(cod_num[12]):
         print(f'CNP-ul dvs nu este valid. Cifra de control (ultima cifra) ar fi trebuit sa fie {cifra_control}')
         return 0
     else:
         return 1
 
+#Definim o functie care verifica lungimea codului, si prezenta exclusiva a cifrelor in CNP
 
 def cnp_initial_checks(cnp):
     if not cnp.isnumeric():
@@ -44,10 +44,11 @@ def cnp_initial_checks(cnp):
     else:
         return 1
 
+#Definim o functie care verifica secolul nasterii si returneaza data completa a nasterii
 
 def confirmare_secol_nastere(comutator,cnp):
     if comutator == 1:
-        if cnp[0] != 0:
+        if int(cnp[0]) != 0:
             anul_yy = cnp[1:3]
             if int(cnp[0]) == 1 or int(cnp[0]) == 2:
                 anul_yyyy = '19' + anul_yy
@@ -63,13 +64,13 @@ def confirmare_secol_nastere(comutator,cnp):
                 data_nasterii = anul_yyyy + cnp[3:7]
             return 1, data_nasterii
         else:
-            validated = 0
             print("Prima cifra a CNP-ului dvs nu poate fi 0. Va rugam re-introduceti cnp-ul")
             data_nasterii = '000000'
             return 0, data_nasterii
     else:
         return 0, 0
 
+#Definim o functie care verifica data de nastere.
 
 def validare_data_nastere(dob):
     try:
@@ -86,6 +87,7 @@ def validare_data_nastere(dob):
         print("Data nasterii nu este valida. Va rugam reintroduceti CNP-ul")
         return 0
 
+#Definim o functie care verifica codul pentru biroul EP
 
 def validare_birou_ep(cod_num):
     nnn = cod_num[9:12]
@@ -96,8 +98,8 @@ def validare_birou_ep(cod_num):
         return 1
 
 
+
 def validare_CNP_cu_functii():
-    validated = 1
     cnp=input("Va rugam introduceti CNP-ul dvs. CNP-ul trebuie sa contina doar 13 cifre: ")
     validated = cnp_initial_checks(cnp)
     validated_2 = confirmare_secol_nastere(validated, cnp)
