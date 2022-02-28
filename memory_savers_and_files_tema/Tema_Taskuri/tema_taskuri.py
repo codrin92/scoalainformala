@@ -217,7 +217,7 @@ elif int(optiune) == 4:  #Userul a ales sa adauge un task
         csv_writer = csv.writer(csv_file, delimiter=',')
         csv_writer.writerow(task_2)
 
-# elif int(optiune) == 5:  #Userul a ales sa modifice un task
+elif int(optiune) == 5:  #Userul a ales sa modifice un task
     data = pd.read_csv('data_taskuri.csv', header=None)
     print(data)
     no_of_tasks = data.shape[0]
@@ -271,9 +271,6 @@ else:   #Userul a ales sa stearga un task - E singura optiune ramasa
     data.drop(int(task_to_change), axis=0, inplace=True)
     fisier = data.to_csv("modified_output_6.csv")
 
-
-
-
 # print(data)
 # print(data.iat[int(task_to_change), 0])
 
@@ -281,17 +278,6 @@ else:   #Userul a ales sa stearga un task - E singura optiune ramasa
 # print(data)
 # print(data.shape)
 # print(data.shape[0])
-
-
-
-
-
-
-
-
-
-
-
 
 #Filtrare dupa nume de task
 
