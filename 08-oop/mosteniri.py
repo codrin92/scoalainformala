@@ -154,28 +154,113 @@
 # print(hasattr(Caine, 'nr_picioare'))
 # print(type(obiect_1).__name__)
 
+#
+# class Validator:
+#     def __init__(self, cnp):
+#         self.CNP = cnp
+#
+#     def lungime(self):
+#         if len(self.CNP) !=13:
+#             return False
+#         return True
+#
+#
+#     def __str__(self):
+#         if self.lungime() is True:
+#             return f"CNPul {self.CNP} este valid"
+#         else:
+#             return f"CNPul {self.CNP} nu este valid"
+#
+#
+#
+# obiect_1 = Validator(input("Introdu cnpul: "))
+# print(obiect_1)
 
-class Validator:
-    def __init__(self, cnp):
-        self.CNP = cnp
+#
+# class Star:
+#     def __init__(self, nume, galaxie):
+#         self.name = nume
+#         self.galaxy = galaxie
+#
+#     def __str__(self):
+#         return f"{self.name} este in {self.galaxy}"
+#
+# soare = Star("Soarele", "Calea Lactee")
+# print(soare)
 
-    def lungime(self):
-        if len(self.CNP) !=13:
-            return False
-        return True
+#vehicul
+#vehiculdeteren
+#vehiculdetractare
 
+class Vehicul:
+    pass
+
+class VehiculTeren(Vehicul):  #Mostenirea se defineste in paranteze. Clasa VehiculTeren mosteneste Clasa Vehicul. Ordinea de citire a mostenirilor este de la stanga la dreapta
+    pass
+
+class VehiculTractare(VehiculTeren):   #Daca clasa pe care o mostenim are si ea parinte, cautarea variabililelor poate intra si in clasa parinte a parintelui "intemediar"
+    pass
+
+#parinti sunt Vehicul pentru VehiculTeren (direct) si pt VehiculTractare (indirect)
+#parinte sunt VehiculTeren pt VehiculTractare
+#Parintii sunt superclase pt copii (superclass)
+#Copiii sunt VehiculTeren si VehiculTractare pt Vehicul.
+#Copii sunt si VehiculTractare pt VehiculTeren
+#Copiii sunt subclase pt parinti (subclass)
+# print("Vehicul VehiculTeren VehiculTractare")
+# for cls1 in [Vehicul, VehiculTeren, VehiculTractare]:
+#     for cls2 in [Vehicul, VehiculTeren, VehiculTractare]:
+#         print(issubclass(cls1, cls2), end = '\t')
+#     print()
+
+# vehicul1 = Vehicul()
+# vehicul_teren = VehiculTeren()
+# vehicul_tractare = VehiculTractare()
+# print(isinstance(vehicul_teren, Vehicul))   #instantele de subclase sunt automat si instante ale superclasei
+# print(isinstance(vehicul_tractare, Vehicul))   #instantele de subclase sunt automat si instante ale superclasei
+#
+# for obj in [vehicul1, vehicul_teren, vehicul_tractare]:
+#     for cls in [Vehicul, VehiculTeren, VehiculTractare]:
+#         print(isinstance(obj, cls), end = '\t')
+#     print()
+
+# class Exemplu:
+#
+#     def __init__(self, val):
+#         self.value = val
+#
+# obiect_1 = Exemplu(0)
+# obiect_2 = Exemplu(2)
+# obiect_3 = obiect_1  #Cand doua instante sunt egale, modificarile viitoare se vor reflecta in ambele!!!
+# obiect_3.value +=1
+#
+# print(obiect_1 is obiect_2)
+# print(obiect_2 is obiect_3)
+# print(obiect_3 is obiect_1)
+# print(obiect_1.value, obiect_2.value, obiect_3.value)
+#
+# string_1 = "Maria are mere "
+# string_2 = "Maria are mere mari"
+# string_1 += "mari"
+# print(string_1 == string_2, string_1 is string_2)
+
+class Super:
+    def __init__(self, nume):
+        self.name = nume
 
     def __str__(self):
-        if self.lungime() is True:
-            return f"CNPul {self.CNP} este valid"
-        else:
-            return f"CNPul {self.CNP} nu este valid"
+        return f"Numele meu este {self.name}"
+
+class Sub(Super):
+
+    def __init__(self, nume):
+        self.name = nume
+        # Super.__init__(self, nume)
+
+    def __str__(self):
+        return f"Nume"
 
 
 
-obiect_1 = Validator(input("Introdu cnpul: "))
-print(obiect_1)
-
-
-
-
+obiect = Sub("Alexandra")
+print(obiect)
