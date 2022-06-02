@@ -1,21 +1,46 @@
+{% load static%}
 <html>
 <head>
     {% block title %}
     {% endblock %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static '/css/main.css' %}">
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #D6EEEE;
+}
+tr:hover {background-color: #D6EEEE;}
+tr:first-child:hover {
+    background-color: #CA634D;
+}
+</style>
 </head>
-<body>
+<body id="bg" style="background-image: url({% static 'img/background.jpg' %});">
     <div class = "container">
         <div class="col-md-12">
             <nav>
+                {% if request.user.is_superuser %}
                 <a class="btn" href="/admin">Admin</a>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+                    <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
+                {% endif %}
             </nav>
         </div>
     </div>
     {% block content %}
     {% endblock %}
     <div>
-
     </div>
 </body>
 </html>

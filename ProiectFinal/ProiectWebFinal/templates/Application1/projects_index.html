@@ -1,26 +1,64 @@
-{% extends 'base.html' %}
+{% extends 'base2.html' %}
 {% block content %}
-    <a class="btn btn-info" href="{% url 'reportwriter:add_report' %}">Add project</a>
-    <table class="table">
+    <br>
+    <br>
+    <br>
+    <br>
+    <nav>
+    {% if request.user.is_authenticated %}
+        <a class="w3-button w3-grey w3-hover-black" href="{% url 'reportwriter:project_list' %}">Live Projects</a>
+        <a class="w3-button w3-grey w3-hover-black" href="{% url 'reportwriter:closed_projects' %}">Closed Projects</a>
+    {% endif %}
+    </nav>
+    <br>
+    <a class="w3-button w3-black w3-hover-grey" href="{% url 'reportwriter:add_project' %}">Add project</a>
+    <table class="w3-table-all w3-hoverable w3-card-4 w3-centered w3-bordered">
         <thead>
-            <tr>
+            <tr class="w3-grey">
                 <th>Index</th>
                 <th>Project Name</th>
-                <th>Project Value (£)</th>
+                <th>Project Value (£m)</th>
                 <th>Project Type</th>
                 <th>Client</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for item in reporting_list %}
-                <tr>
+            {% for item in reporting_list %}      <!--Aici se foloseste numele modelului + _ + list-->
                     <td>{{ forloop.counter }}</td>
                     <td>{{ item.project_name }}</td>
                     <td>{{ item.project_value }}</td>
-                    <td>{{ item.project_type }}</td>
-                    <td>{{ item.client }}</td>
-                    <td><a href="{% url 'reportwriter:modify_report' item.id %}" class="btn btn-success">Modify</a>
+                    <td>{{ item.building_type }}</td>
+                    <td>{{ item.client_company }}</td>
+                    <td><a href="{% url 'reportwriter:modify_project' item.id %}" class="w3-button w3-khaki w3-hover-grey w3-round-xlarge">Modify Project</a>
+                        {% if item.active == 1 %}
+                            <a href="{% url 'reportwriter:delete_project' item.id %}" class="w3-button w3-khaki w3-hover-red w3-round-xlarge">Delete Project</a>
+                        {% else %}
+                            <a href="{% url 'reportwriter:activate_project' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Activate Project</a>
+                        {% endif %}
+                        {% if item.quote_produced == 0 %}
+                            <a href="{% url 'reportwriter:generate_quote' item.id %}" class="w3-button w3-khaki w3-hover-blue w3-round-xlarge">Generate Quote</a>
+                        {% else %}
+                            {% if item.quote_issued == 0 %}
+                                <a href="{% url 'reportwriter:download_quote' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Download Quote</a>
+                            {% else %}
+                                <a class="w3-button w3-disabled" disabled>Quote Issued</a>
+                            {% endif %}
+                        {% endif %}
+                        {% if item.quote_issued == 0 %}
+                            <a class="w3-button w3-disabled" disabled>Quote Accepted</a>
+                        {% else %}
+                            {% if item.quote_accepted == 0 %}
+                                <a href="{% url 'reportwriter:quote_accepted' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Quote Accepted</a>
+                            {% else %}
+                                <a href="{% url 'reportwriter:generate_report' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Download Final Report</a>
+                            {% endif %}
+                        {% endif %}
+
+
+
+
+                        </td>
                     <td></td>
                 </tr>
             {% endfor %}
