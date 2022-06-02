@@ -1,0 +1,14 @@
+{% extends 'base2.html' %}
+{% block content %}
+    <div class="w3-center w3-hide-small">
+    <form method="POST" class="w3-container w3-card-4 w3-light-grey">
+        {% csrf_token %}
+    <label class="w3-text-grey">Username</label>
+    <input type="text" name="username">
+    <label class="w3-text-grey">Password</label>
+    <input type="password" name="password">
+    <button type="submit" class="w3-button" class="w3-btn w3-grey w3-hover-green w3-round-xlarge">Login</button>
+        <span style="color: red;">{{ form.non_field_errors }}</span>
+    </div>
+    </form>
+{% endblock %}

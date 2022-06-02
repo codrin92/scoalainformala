@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    <nav>
+    {% if request.user.is_authenticated %}
+        <a class="btn" href="{% url 'reportwriter:project_list' %}">Live Projects</a>
+        <a class="btn" href="{% url 'reportwriter:closed_projects' %}">Closed Projects</a>
+    {% endif %}
+    </nav>
+{% endblock %}
