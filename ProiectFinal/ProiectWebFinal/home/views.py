@@ -8,3 +8,6 @@ from django.views.generic import ListView, TemplateView
 class CreateHomeView(LoginRequiredMixin, TemplateView):
     template_name = 'home/home_page.html'
 
+class CreateAboutView(TemplateView):
+    template_name = 'home/about_page.html'
+

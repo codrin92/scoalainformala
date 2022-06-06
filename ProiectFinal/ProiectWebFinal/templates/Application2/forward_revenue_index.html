@@ -1,0 +1,62 @@
+{% extends 'base2.html' %}
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <nav>
+    {% if request.user.is_authenticated %}
+        <a class="w3-button w3-grey w3-hover-black" href="{% url 'finance:revenues_list' %}">Projected Revenues</a>
+        <a class="w3-button w3-grey w3-hover-black" href="{% url 'finance:completed_work' %}">Work Done</a>
+    {% endif %}
+    </nav>
+    <br>
+    <a class="w3-button w3-black w3-hover-grey" href="{% url 'reportwriter:add_project' %}">Add project</a>
+    <table class="w3-table-all w3-hoverable w3-card-4 w3-centered w3-bordered">
+        <thead>
+            <tr class="w3-grey">
+                <th>Index</th>
+                <th>Project Name</th>
+                <th>Fee (GBP)</th>
+                <th>Client</th>
+                <th>Assigned Engineer</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in reporting_list %}      <!--Aici se foloseste numele modelului + _ + list-->
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.project_name }}</td>
+                    <td>{{ item.project_fee }}</td>
+                    <td>{{ item.client_company }}</td>
+                    <td>{{ item.assigned_engineer }}</td>
+                    <td><a href="{% url 'finance:reassign_engineer' item.id %}" class="w3-button w3-khaki w3-hover-grey w3-round-xlarge">Reassign Engineer</a>
+                    </td>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if is_paginated %}
+    <div class="w3-center w3-grey" >
+        <div class="w3-bar">
+            {% if page_obj.has_previous %}
+                <a class='w3-circle' href='?page={{ page_obj.previous_page_number}}'><<</a>
+            {% else %}
+                <a class='w3-circle w3-disabled'><span><<</span></a>
+            {% endif %}
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+                <a class="'w3-circle"><span>{{ i }}<span class='sr-only'>(curent)</span></span></a>
+            {% else %}
+                <a class="w3-circle" href="?page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a class="w3-circle" href="?page={{ page_obj.next_page_number }}">>></a>
+        {% else %}
+            <a class="w3-circle w3-disabled"><span>>></span></a>
+        {% endif %}
+        <a class="align-right">Showing projects {{ page_obj.start_index }} - {{ page_obj.end_index}} of {{ page_obj.paginator.count }}</a>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

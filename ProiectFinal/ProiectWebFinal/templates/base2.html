@@ -11,13 +11,19 @@
 <!-- Navbar (sit on top) -->
 <div class="w3-top">
   <div class="w3-bar w3-white w3-wide w3-padding w3-card">
-    <a href="/home" class="w3-bar-item w3-button"><b>CF</b> Engineering</a>
+    {% if request.user.is_authenticated %}
+        <a href="/home" class="w3-bar-item w3-button"><b>CF</b> Engineering</a>
+    {% else %}
+        <a class="w3-bar-item w3-button"><b>CF</b> Engineering</a>
+    {% endif %}
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right w3-hide-small">
+      {% if request.user.is_authenticated %}
       <a href="/home" class="w3-bar-item w3-button">Home</a>
       <a href="/reportwriter" class="w3-bar-item w3-button">Projects</a>
-      <a href="/invoicing" class="w3-bar-item w3-button">Invoicing</a>
-      <a href="/about" class="w3-bar-item w3-button">About</a>
+      <a href="/finance" class="w3-bar-item w3-button">Finance</a>
+      {% endif %}
+      <a href="/home/about" class="w3-bar-item w3-button">About</a>
     </div>
     <br>
     <br>

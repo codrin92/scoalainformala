@@ -13,31 +13,40 @@ from Application1.models import Reporting
 
 from Application1.mailmergerunner import mailmergefunction_quotes
 
+from Application1.mailmergerunner import mailmergefunction_reports
 
 class ProjectsView(LoginRequiredMixin, ListView):
     model = Reporting
     template_name = 'Application1/projects_index.html'
+    paginate_by = 5
+    queryset = model.objects.filter(active=1)
+    context_object_name = 'projects'
 
     def get_context_data(self, *args, **kwargs):
         data=super(ProjectsView, self).get_context_data()
-        data['reporting_list'] = self.model.objects.filter(active=1)
+        # data['reporting_list'] = self.model.objects.filter(active=1)
         return data
 
 class ProjectsClosedView(LoginRequiredMixin, ListView):
     model = Reporting     #Este modelul declarat in models.py
     template_name = 'Application1/projects_index.html'
+    paginate_by = 5
+    queryset = model.objects.filter(active=0)
+    context_object_name = 'projects'
 
     def get_context_data(self, *args, **kwargs):
         data=super(ProjectsClosedView, self).get_context_data(*args, **kwargs)
-        data['reporting_list'] = self.model.objects.filter(active=0)
+        # data['reporting_list'] = self.model.objects.filter(active=0)
         return data
 
 class CreateProjectsView(LoginRequiredMixin, CreateView):
     model = Reporting
     fields = ['project_name', 'project_address', 'project_value', 'client_company', 'client_representative', 'building_height', 'building_type', 'number_of_stairs']
     template_name ='Application1/project_form.html'
+    counter = 1
 
     def get_success_url(self):
+        self.counter += 1
         return reverse('reportwriter:project_list')
 
 class UpdateProjectsView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
@@ -49,7 +58,20 @@ class UpdateProjectsView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
         return reverse('reportwriter:project_list')
 
     def test_func(self):                             #de facut la toate
-        if self.request.user.is_superuser:
+        if self.request.user.is_authenticated:
+            return True
+        return False
+
+class AssignEngineerView(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
+    model = Reporting
+    fields = ['assigned_engineer']
+    template_name = 'Application1/assign_engineer.html'
+
+    def get_success_url(self):
+        return reverse('reportwriter:project_list')
+
+    def test_func(self):                             #de facut la toate
+        if self.request.user.is_authenticated:
             return True
         return False
 
@@ -75,7 +97,6 @@ def download_quote(request, pk):
 # def download_report(request, pk):
 #     Reporting.objects.filter(id=pk)
     # Define Django project base directory
-    Reporting.objects.filter(id=pk).update(quote_issued=1)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Define text file name
     project_specifics=Reporting.objects.get(id=pk)
@@ -98,7 +119,14 @@ def download_quote(request, pk):
     # response['Content-Length'] = len(path)
     # response['Errors']= 'ignore'
     # Return the response value
+    Reporting.objects.filter(id=pk).update(quote_issued=1)
+    # redirect('reportwriter:project_list')
     return response
+
+@login_required
+def dl_and_refresh(request, pk):
+    download_quote(request, pk)
+    return redirect('reportwriter:project_list')
 
 @login_required
 def quote_accepted(request, pk):
@@ -107,14 +135,20 @@ def quote_accepted(request, pk):
 
 @login_required
 def generate_report(request, pk):
-# def download_report(request, pk):
-#     Reporting.objects.filter(id=pk)
-    # Define Django project base directory
     Reporting.objects.filter(id=pk).update(report_generated=1)
+    project_specifics = Reporting.objects.get(id=pk)
+    mailmergefunction_reports(project_specifics, pk)
+    return redirect('reportwriter:project_list')
+
+@login_required
+def download_report(request, pk):
+    #     Reporting.objects.filter(id=pk)
+    # Define Django project base directory
+    Reporting.objects.filter(id=pk).update(report_issued=1)
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     # Define text file name
     project_specifics=Reporting.objects.get(id=pk)
-    filename = "template_report.pdf"
+    filename = f"PRJ{pk}-{project_specifics.project_name}.pdf"
     # filename = 'template.docx'
     # Define the full file path
     filepath = BASE_DIR + '/templates/Application1/testfiles/' + filename
@@ -134,6 +168,7 @@ def generate_report(request, pk):
     # response['Errors']= 'ignore'
     # Return the response value
     return response
+
 
 
 

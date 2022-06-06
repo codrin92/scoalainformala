@@ -24,8 +24,8 @@
             </tr>
         </thead>
         <tbody>
-            {% for item in reporting_list %}      <!--Aici se foloseste numele modelului + _ + list-->
-                    <td>{{ forloop.counter }}</td>
+            {% for item in projects %}      <!--Aici se foloseste numele modelului + _ + list-->
+                    <td>{{ forloop.counter0|add:page_obj.start_index }}</td>
                     <td>{{ item.project_name }}</td>
                     <td>{{ item.project_value }}</td>
                     <td>{{ item.building_type }}</td>
@@ -51,17 +51,45 @@
                             {% if item.quote_accepted == 0 %}
                                 <a href="{% url 'reportwriter:quote_accepted' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Quote Accepted</a>
                             {% else %}
-                                <a href="{% url 'reportwriter:generate_report' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Download Final Report</a>
+                                {% if item.assigned_engineer == 'NA' %}
+                                    <a href="{% url 'reportwriter:assign_engineer' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Assign Engineer</a>
+                                {% else %}
+                                    {% if item.report_generated == 0 %}
+                                        <a href="{% url 'reportwriter:generate_report' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Generate Report</a>
+                                    {% else %}
+                                        <a href="{% url 'reportwriter:download_report' item.id %}" class="w3-button w3-khaki w3-hover-green w3-round-xlarge">Download Report</a>
+                                    {% endif %}
+                                {% endif %}
                             {% endif %}
                         {% endif %}
-
-
-
-
                         </td>
                     <td></td>
                 </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% if is_paginated %}
+    <div class="w3-center w3-grey" >
+        <div class="w3-bar">
+            {% if page_obj.has_previous %}
+                <a class='w3-button w3-circle w3-teal' href='?page={{ page_obj.previous_page_number}}'><<</a>
+            {% else %}
+                <a class='w3-button w3-circle w3-teal w3-disabled'><span><<</span></a>
+            {% endif %}
+        {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+                <a class="'w3-button w3-button w3-round-xxlarge w3-pale-green"><span>{{ i }}<span class='sr-only'>(curent)</span></span></a>
+            {% else %}
+                <a class="w3-button w3-circle w3-teal" href="?page={{ i }}">{{ i }}</a>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <a class="w3-button w3-circle w3-teal" href="?page={{ page_obj.next_page_number }}">>></a>
+        {% else %}
+            <a class="w3-button w3-circle w3-teal w3-disabled"><span>>></span></a>
+        {% endif %}
+        <a class="align-right">Showing projects {{ page_obj.start_index }} - {{ page_obj.end_index}} of {{ page_obj.paginator.count }}</a>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
