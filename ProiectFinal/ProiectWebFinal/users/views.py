@@ -15,7 +15,6 @@ from users.forms import NewAccountForm
 
 punctuation = '!$%?#@'
 
-
 class CreateNewAccount(LoginRequiredMixin, CreateView):
     model = User
     template_name = 'users/user_form.html'
@@ -45,4 +44,4 @@ class CreateNewAccount(LoginRequiredMixin, CreateView):
             email.attach_alternative(msg_html, 'text/html')
             email.send()
 
-        return reverse('reportwriter:project_list')
+        return reverse('home:home')
